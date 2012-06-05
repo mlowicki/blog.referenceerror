@@ -1,4 +1,4 @@
 referenceerror.com
 ==================
 
-code used in posts from referenceerror.com
+sample code from referenceerror.com
