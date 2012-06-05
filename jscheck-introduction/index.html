@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head>
+  <script src="jscheck.js"></script>
+  <script>
+    /**
+     * Removes duplicates from the input array.
+     * @param {Array} arr Input array.
+     * @return {Array}
+     */
+    function removeDupes(arr) {
+      var uniqueNums = {},
+          num;
+
+      for (i = arr.length - 1; i >= 0; i--) {
+        num = arr[i];
+
+        if (uniqueNums.hasOwnProperty(num)) {
+          arr.splice(i, 1);
+        }
+        else {
+          uniqueNums[num] = true;
+        }
+      }
+
+      return arr;
+    }
+
+    JSC.on_report(function(report) {
+      console.info(report);
+    });
+
+    JSC.on_fail(function(report) {
+      console.info('fail', report.args);
+    });
+
+    /**
+     * Checks if array has duplicates.
+     * @param {Array} arr Input array.
+     * @return {Boolean} True if input array has duplicates, false otherwise.
+     */
+    function hasDupes(arr) {
+      arr = arr.slice().sort();
+
+      var prev = arr[0],
+          i,
+          len = arr.length;
+
+      for (i = 1; i < len; i++) {
+        if (prev === arr[i]) {
+          return true;
+        }
+
+        prev = arr[i];
+      }
+
+      return false;
+    }
+
+    JSC.test(
+      'Remove duplicates',
+      function (verdict, input) {
+        return verdict(!hasDupes(removeDupes(input)));
+      },
+      [JSC.array(JSC.integer(20), JSC.integer(1,10))]
+    );
+  </script>
+</head>
+<body>
+</body>
+</html>
