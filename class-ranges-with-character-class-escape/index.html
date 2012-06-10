@@ -1,0 +1,61 @@
+<!doctype html>
+<head>
+  <link rel="stylesheet" href="bootstrap.css">
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    window.onload = function() {
+      function $(id) {
+        return document.getElementById(id);
+      }
+
+      function test(func, regexp, input) {
+        var rowEl = document.createElement('tr');
+        rowEl.className = 'test';
+        var regexpEl = document.createElement('td');
+        regexpEl.innerHTML = regexp;
+        rowEl.appendChild(regexpEl);
+        var inputEl = document.createElement('td');
+        inputEl.innerHTML = input;
+        rowEl.appendChild(inputEl);
+        var resEl = document.createElement('td');
+        rowEl.appendChild(resEl);
+
+        try {
+          resEl.innerHTML = func();
+        }
+        catch (e) {
+          resEl.innerHTML = e.message;
+        }
+
+        $('results').querySelector('tbody').appendChild(rowEl);
+      }
+
+      test(function() { return new RegExp('[z-a]').test('b'); }, '[z-a]', 'b');
+      test(function() { return new RegExp('[\\d-b]').test('3'); }, '[\\d-b]', '3');
+      test(function() { return new RegExp('[\\d-b]').test('-'); }, '[\\d-b]', '-'); // char code 45
+      test(function() { return new RegExp('[\\d-b]').test('b'); }, '[\\d-b]', 'b');
+      test(function() { return new RegExp('[\\d-b]').test('a'); }, '[\\d-b]', 'a');
+      test(function() { return new RegExp('[\\d-b]').test(':'); }, '[\\d-b]', ':'); // char code 58
+      test(function() { return new RegExp('[\\d-b]').test('.'); }, '[\\d-b]', '.'); // char code 46
+      test(function() { return new RegExp('[a-\\d]').test('a'); }, '[a-\\d]', 'a');
+      test(function() { return new RegExp('[a-\\d]').test('-'); }, '[a-\\d]', '-');
+      test(function() { return new RegExp('[a-\\d]').test('3'); }, '[a-\\d]', '3');
+      test(function() { return new RegExp('[a-\\d]').test('b'); }, '[a-\\d]', 'b');
+      test(function() { return new RegExp('[a-\\d]').test('.'); }, '[a-\\d]', '.');
+      test(function() { return new RegExp('[,-\\d]').test(','); }, '[,-\\d]', ','); // char code 44
+      test(function() { return new RegExp('[,-\\d]').test('.'); }, '[,-\\d]', '.'); // char code 45
+      test(function() { return new RegExp('[\\d-\\w]').test('5'); }, '[\\d-\\w]', '5');
+      test(function() { return new RegExp('[\\d-\\w]').test('c'); }, '[\\d-\\w]', 'c');
+      test(function() { return new RegExp('[\\d-\\w]').test('-'); }, '[\\d-\\w]', '-');
+      test(function() { return new RegExp('[\\w-\\d]').test('c'); }, '[\\w-\\d]', 'c');
+    };
+  </script>
+<body>
+  <table id="results" class="table table-bordered table-striped">
+    <thead>
+      <tr><th>Regular expression</th><th>Input</th><th>Result</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</body>
+</html>
