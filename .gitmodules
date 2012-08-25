@@ -1,0 +1,3 @@
+[submodule "matching-balanced-strings/test.js"]
+	path = matching-balanced-strings/test.js
+	url = git://github.com/mlowicki/test.js.git
